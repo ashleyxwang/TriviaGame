@@ -20,7 +20,20 @@ var questions = [
     },
 ];
 
-function preGame () {
+function showQuestions() {
+    for (let i = 0; i < questions.length; i++) {
+        var textDiv = $("<p>")
+        textDiv.text(questions[i].text);
+        $(".questionsDisplay").append(textDiv);
+
+        for (let j = 0; j < questions[i].choices.length; j++) {
+            var choicesDiv = $("<br><input type='radio' name=" + i + ">" + questions[i].choices[j] + "</input>")
+            $(textDiv).append(choicesDiv);
+        }
+    }
+}
+
+function preGame() {
     //Display instructions and start button
     $("#instructions").text(instructionsContent);
     $(".gamePage").hide();
@@ -33,14 +46,15 @@ function preGame () {
     })
 }
 
-function startGame () {
+function startGame() {
     console.log("Game Started")
     $(".gamePage").show();
     startTimer();
+    showQuestions();
 }
 
 // set and countdown Timer
-function startTimer () {
+function startTimer() {
     timer = setInterval(function () {
     countDown--;
     $("#timerBox").text(countDown);
@@ -58,8 +72,6 @@ function endGame() {
     $("#restart").click(function(){
         $(".resultsPage").hide();
         $(".startPage").show();
-        console.log(".startPage");
-
     });
 }
 
@@ -74,6 +86,5 @@ function endGame() {
 
 $(document).ready(function(){
     preGame();
-
 
 });
