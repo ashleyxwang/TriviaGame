@@ -1,6 +1,9 @@
 var instructionsContent = "Three questions, 30 seconds...";
 var timer = 0;
 var countDown = 5;
+var numCorrect = 0;
+var numIncorrect = 0;
+var numUnanswered = 0;
 
 var questions = [
     {
@@ -20,22 +23,11 @@ var questions = [
     },
 ];
 
-function showQuestions() {
-    for (let i = 0; i < questions.length; i++) {
-        var textDiv = $("<p>")
-        textDiv.text(questions[i].text);
-        $(".questionsDisplay").append(textDiv);
-
-        for (let j = 0; j < questions[i].choices.length; j++) {
-            var choicesDiv = $("<br><input type='radio' name=" + i + ">" + questions[i].choices[j] + "</input>")
-            $(textDiv).append(choicesDiv);
-        }
-    }
-}
-
 function preGame() {
     //Display instructions and start button
     $("#instructions").text(instructionsContent);
+    $("#instructions").show();
+    $("#start").show();
     $(".gamePage").hide();
     $(".resultsPage").hide();
 
@@ -53,6 +45,19 @@ function startGame() {
     showQuestions();
 }
 
+function showQuestions() {
+    for (let i = 0; i < questions.length; i++) {
+        var textDiv = $("<p>")
+        textDiv.text(questions[i].text);
+        $(".questionsDisplay").append(textDiv);
+
+        for (let j = 0; j < questions[i].choices.length; j++) {
+            var choicesDiv = $("<br><input type='radio' name=" + i + ">" + questions[i].choices[j] + "</input>")
+            $(textDiv).append(choicesDiv);
+        }
+    }
+};
+
 // set and countdown Timer
 function startTimer() {
     timer = setInterval(function () {
@@ -60,18 +65,22 @@ function startTimer() {
     $("#timerBox").text(countDown);
     if (countDown === 0) {
         clearInterval(timer);
+        clearInterval(countDown);
         endGame();
     };
     },1000);
 }
 
+$("#correct").text("Correct: " + numCorrect);
+$("#incorrect").text("Incorrect: " + numIncorrect);
+$("#unanswered").text("Unanswered: " + numUnanswered)
+
 function endGame() {
     $(".gamePage").hide();
     $(".resultsPage").show();
-
+    $(".questionsDisplay").empty();
     $("#restart").click(function(){
-        $(".resultsPage").hide();
-        $(".startPage").show();
+        preGame();
     });
 }
 
